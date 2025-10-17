@@ -2,7 +2,7 @@
 # Demo provider implementation that works from environment variables only (no external APIs)
 # This provider simulates email, calendar, and task data for demonstration purposes
 ## providers/demo.py
-```python
+python
 import os
 
 def get_gmail_unread() -> int:
