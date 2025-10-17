@@ -1,0 +1,3 @@
+# requirements.txt
+# Python package dependencies for the personal dashboard
+# This file lists all required Python packages for the application
