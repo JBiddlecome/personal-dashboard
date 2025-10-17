@@ -1,59 +1,102 @@
-<!-- templates/index.html -->
-<!-- Main HTML template for the personal dashboard -->
-<!-- This file provides the user interface for the dashboard application -->
-```html
-<div class="card">
-<h2>✅ Tasks Due Today</h2>
-<ul id="tasks-list"></ul>
-</div>
-<div class="card wide">
-<h2>🗓️ Today’s Calendar</h2>
-<ul id="events-list"></ul>
-</div>
-</section>
-</main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personal Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Personal Dashboard</h1>
+            <p class="subtitle">Stay on top of demo inbox counts, tasks, and events.</p>
+        </header>
 
+        <div id="status" class="status" role="status" aria-live="polite">Loading…</div>
 
-<script>
-async function loadSummary() {
-const res = await fetch('/api/summary');
-const data = await res.json();
-document.getElementById('gmail-count').textContent = data.gmail.unread;
-document.getElementById('outlook-count').textContent = data.outlook.unread;
+        <main>
+            <section class="grid">
+                <div class="card">
+                    <h2>📬 Gmail Unread</h2>
+                    <p id="gmail-count" class="big-number">--</p>
+                    <p class="card-note">Demo numbers from <code>/api/summary</code>.</p>
+                </div>
 
+                <div class="card">
+                    <h2>📥 Outlook Unread</h2>
+                    <p id="outlook-count" class="big-number">--</p>
+                    <p class="card-note">Demo numbers from <code>/api/summary</code>.</p>
+                </div>
 
-const tasks = data.tasks.today_due || [];
-const tlist = document.getElementById('tasks-list');
-tlist.innerHTML = '';
-if (tasks.length === 0) {
-tlist.innerHTML = '<li>Nothing due 🎉</li>';
-} else {
-tasks.forEach(t => {
-const li = document.createElement('li');
-li.textContent = t;
-tlist.appendChild(li);
-});
-}
+                <div class="card">
+                    <h2>✅ Tasks Due Today</h2>
+                    <ul id="tasks-list" class="list"></ul>
+                </div>
 
+                <div class="card wide">
+                    <h2>🗓️ Today’s Calendar</h2>
+                    <ul id="events-list" class="list"></ul>
+                </div>
+            </section>
+        </main>
+    </div>
 
-const events = data.calendar.today || [];
-const elist = document.getElementById('events-list');
-elist.innerHTML = '';
-if (events.length === 0) {
-elist.innerHTML = '<li>No events today</li>';
-} else {
-events.forEach(ev => {
-const li = document.createElement('li');
-const time = ev.time ? `<strong>${ev.time}</strong> ` : '';
-const loc = ev.location ? ` @ ${ev.location}` : '';
-li.innerHTML = `${time}${ev.title}${loc}`;
-elist.appendChild(li);
-});
-}
-}
+    <script>
+    async function loadSummary() {
+        const status = document.getElementById('status');
+        try {
+            status.textContent = 'Refreshing…';
+            const res = await fetch('/api/summary');
+            if (!res.ok) {
+                throw new Error(`Request failed with ${res.status}`);
+            }
+            const data = await res.json();
 
+            document.getElementById('gmail-count').textContent = data.gmail?.unread ?? '--';
+            document.getElementById('outlook-count').textContent = data.outlook?.unread ?? '--';
 
-loadSummary();
-</script>
+            const tasks = data.tasks?.today_due ?? [];
+            const tlist = document.getElementById('tasks-list');
+            tlist.innerHTML = '';
+            if (tasks.length === 0) {
+                tlist.innerHTML = '<li class="empty">Nothing due 🎉</li>';
+            } else {
+                tasks.forEach(t => {
+                    const li = document.createElement('li');
+                    li.textContent = t;
+                    tlist.appendChild(li);
+                });
+            }
+
+            const events = data.calendar?.today ?? [];
+            const elist = document.getElementById('events-list');
+            elist.innerHTML = '';
+            if (events.length === 0) {
+                elist.innerHTML = '<li class="empty">No events today</li>';
+            } else {
+                events.forEach(ev => {
+                    const li = document.createElement('li');
+                    const time = ev.time ? `<strong>${ev.time}</strong> ` : '';
+                    const loc = ev.location ? ` <span class="event-location">@ ${ev.location}</span>` : '';
+                    li.innerHTML = `${time}${ev.title}${loc}`;
+                    elist.appendChild(li);
+                });
+            }
+
+            status.textContent = `Last updated ${new Date().toLocaleTimeString()}`;
+            status.classList.remove('error');
+        } catch (error) {
+            console.error('Unable to load summary', error);
+            status.textContent = 'Unable to load dashboard data.';
+            status.classList.add('error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSummary();
+        setInterval(loadSummary, 60000);
+    });
+    </script>
 </body>
 </html>

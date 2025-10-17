@@ -1,17 +1,121 @@
-/* static/styles.css */
-/* Main stylesheet for the personal dashboard */
-/* This file contains CSS styles for the dashboard user interface */
-## static/styles.css
-```css
-:root { --bg:#0b0f14; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; }
-* { box-sizing: border-box; }
-body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; background: var(--bg); color: var(--ink); }
-.container { max-width: 980px; margin: 40px auto; padding: 0 16px; }
-h1 { font-size: 28px; margin-bottom: 20px; }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.card { background: var(--card); padding: 16px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
-.card.wide { grid-column: 1 / -1; }
-h2 { margin: 0 0 8px; font-size: 18px; }
-p { margin: 0; font-size: 28px; }
-ul { margin: 8px 0 0; padding-left: 18px; }
-@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+:root {
+    --bg: #0b0f14;
+    --card: #111827;
+    --ink: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #38bdf8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 980px;
+    margin: 40px auto;
+    padding: 0 16px 48px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.status {
+    margin: 0 auto 24px;
+    padding: 12px 18px;
+    width: fit-content;
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 14px;
+}
+
+.status.error {
+    background: rgba(248, 113, 113, 0.12);
+    color: #f87171;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.28);
+}
+
+.card.wide {
+    grid-column: 1 / -1;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 0;
+}
+
+h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+}
+
+.big-number {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-note {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--ink);
+}
+
+.list li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.list .empty {
+    list-style: none;
+    padding-left: 0;
+    color: var(--muted);
+}
+
+.event-location {
+    color: var(--muted);
+    font-style: italic;
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .big-number {
+        font-size: 40px;
+    }
+}
