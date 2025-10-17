@@ -1,3 +1,59 @@
 <!-- templates/index.html -->
 <!-- Main HTML template for the personal dashboard -->
 <!-- This file provides the user interface for the dashboard application -->
+```html
+<div class="card">
+<h2>✅ Tasks Due Today</h2>
+<ul id="tasks-list"></ul>
+</div>
+<div class="card wide">
+<h2>🗓️ Today’s Calendar</h2>
+<ul id="events-list"></ul>
+</div>
+</section>
+</main>
+
+
+<script>
+async function loadSummary() {
+const res = await fetch('/api/summary');
+const data = await res.json();
+document.getElementById('gmail-count').textContent = data.gmail.unread;
+document.getElementById('outlook-count').textContent = data.outlook.unread;
+
+
+const tasks = data.tasks.today_due || [];
+const tlist = document.getElementById('tasks-list');
+tlist.innerHTML = '';
+if (tasks.length === 0) {
+tlist.innerHTML = '<li>Nothing due 🎉</li>';
+} else {
+tasks.forEach(t => {
+const li = document.createElement('li');
+li.textContent = t;
+tlist.appendChild(li);
+});
+}
+
+
+const events = data.calendar.today || [];
+const elist = document.getElementById('events-list');
+elist.innerHTML = '';
+if (events.length === 0) {
+elist.innerHTML = '<li>No events today</li>';
+} else {
+events.forEach(ev => {
+const li = document.createElement('li');
+const time = ev.time ? `<strong>${ev.time}</strong> ` : '';
+const loc = ev.location ? ` @ ${ev.location}` : '';
+li.innerHTML = `${time}${ev.title}${loc}`;
+elist.appendChild(li);
+});
+}
+}
+
+
+loadSummary();
+</script>
+</body>
+</html>
