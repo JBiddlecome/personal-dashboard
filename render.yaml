@@ -1,3 +1,29 @@
 # render.yaml
 # Render deployment configuration file
 # This file defines the deployment settings for Render.com platform
+## render.yaml
+```yaml
+services:
+- type: web
+name: personal-dashboard
+env: python
+buildCommand: pip install -r requirements.txt
+startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2
+envVars:
+- key: PROVIDER_EMAIL
+value: gmail_demo
+- key: PROVIDER_OUTLOOK
+value: outlook_demo
+- key: PROVIDER_TASKS
+value: tasks_demo
+- key: PROVIDER_CALENDAR
+value: calendar_demo
+- key: DEMO_GMAIL_UNREAD
+value: "14"
+- key: DEMO_OUTLOOK_UNREAD
+value: "7"
+- key: DEMO_TASKS_TODAY
+value: Send invoices,Call vendor,Finish deck
+- key: DEMO_EVENTS_TODAY
+value: 09:00 - Standup @ Zoom|13:00 - Client Call @ Teams|16:30 - Review @ Office
+```
