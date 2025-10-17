@@ -51,8 +51,9 @@ def api_summary():
         "gmail": {"unread": gmail_unread},
         "outlook": {"unread": outlook_unread},
         "tasks": {"today_due": tasks_today},
-        "calendar": {"today": events_today},
+        "calendar": {"today": events_today}
     })
+
 
 
 if __name__ == "__main__":
