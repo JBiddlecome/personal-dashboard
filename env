@@ -1,0 +1,11 @@
+# Provider selection (demo mode)
+PROVIDER_EMAIL=gmail_demo
+PROVIDER_OUTLOOK=outlook_demo
+PROVIDER_TASKS=tasks_demo
+PROVIDER_CALENDAR=calendar_demo
+
+# Demo values to display
+DEMO_GMAIL_UNREAD=14
+DEMO_OUTLOOK_UNREAD=7
+DEMO_TASKS_TODAY=Send invoices,Call vendor,Finish deck
+DEMO_EVENTS_TODAY=09:00 - Standup @ Zoom|13:00 - Client Call @ Teams|16:30 - Review @ Office
